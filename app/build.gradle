@@ -1,0 +1,13 @@
+plugins {
+    id "org.springframework.boot" version "${springBootVersion}"
+}
+
+dependencies {
+    // Internal project dependencies
+    implementation project(":core")
+    implementation project(":database-h2")
+    implementation project(":rest")
+
+    // Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter'
+}

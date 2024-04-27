@@ -1,0 +1,101 @@
+plugins {
+    id "io.spring.dependency-management" version "1.1.4"
+    id 'checkstyle'
+    id 'pmd'
+    id 'jacoco'
+}
+
+allprojects {
+    group = 'com.zenyatta.nttdata.challenge'
+    version = '0.0.1-SNAPSHOT'
+
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
+    apply plugin: 'jacoco'
+
+    compileJava {
+        sourceCompatibility = 21
+        targetCompatibility = 21
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    tasks.test {
+        useJUnitPlatform() 
+        reports {
+            junitXml.required = true
+            html.required = true
+            junitXml.destination = file("$buildDir/reports/tests/")
+        }
+        
+        jacocoTestCoverageVerification.dependsOn jacocoTestReport
+        finalizedBy jacocoTestCoverageVerification
+    }
+
+    tasks.withType(Checkstyle) {
+        reports {
+            xml.required = false
+            html.required = true
+        }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        }
+    }
+
+    checkstyle {
+        toolVersion "10.4"
+        configFile = file("$rootProject.projectDir/config/build/checkstyle_config.xml")
+    }
+
+    pmd {
+        toolVersion "6.37.0"
+        ruleSets = ["$rootProject.projectDir/config/build/pmd_ruleset.xml"]
+    }
+
+    pmdTest {
+        enabled = true
+    }
+
+    jacocoTestReport {
+        reports {
+            html.required = true
+        }
+
+        dependsOn test
+    }
+
+    // Spring code, no logic to test
+    def testExcludeList = [
+            "**/com/zenyatta/nttdata/challenge/rest/ApiController.java",
+            "**/com/zenyatta/nttdata/challenge/rest/ErrorAttributes*",
+            "**/com/zenyatta/nttdata/challenge/rest/ExceptionControllerAdvice*",
+            "**/com/zenyatta/nttdata/challenge/database/h2/configuration/*",
+            "**/com/zenyatta/nttdata/challenge/database/h2/domain/*",
+            "**/com/zenyatta/nttdata/challenge/database/h2/usecase/price/get/GetPriceRepository.java",
+            "**/com/zenyatta/nttdata/challenge/core/domain/*",
+            "**/com/zenyatta/nttdata/challenge/app/*"
+    ]
+
+    jacocoTestCoverageVerification {
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it, exclude:  testExcludeList)
+            }))
+        }
+
+        violationRules {
+            rule {
+                limit {
+                    minimum = 0.8
+                }
+            }
+        }
+    }
+}

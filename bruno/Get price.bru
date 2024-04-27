@@ -1,0 +1,17 @@
+meta {
+  name: Get price
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/api/get/{{BRAND_ID}}/{{PRODUCT_ID}}/{{DATE}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  BRAND_ID: 1
+  PRODUCT_ID: 35455
+  DATE: 2020-06-15T10:01:00
+}
