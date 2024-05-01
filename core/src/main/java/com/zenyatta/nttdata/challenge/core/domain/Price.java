@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public record Price(
         Long entryId,
-        Long brandId,
+        Integer brandId,
         LocalDateTime dateStart,
         LocalDateTime dateEnd,
         Long priceListId,

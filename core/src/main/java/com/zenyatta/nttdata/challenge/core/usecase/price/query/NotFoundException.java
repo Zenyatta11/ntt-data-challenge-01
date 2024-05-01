@@ -1,4 +1,4 @@
-package com.zenyatta.nttdata.challenge.core.usecase.price.get;
+package com.zenyatta.nttdata.challenge.core.usecase.price.query;
 
 import java.io.Serial;
 

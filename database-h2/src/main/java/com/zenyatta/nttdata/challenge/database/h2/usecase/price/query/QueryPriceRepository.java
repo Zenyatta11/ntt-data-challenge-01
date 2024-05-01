@@ -1,4 +1,4 @@
-package com.zenyatta.nttdata.challenge.database.h2.usecase.price.get;
+package com.zenyatta.nttdata.challenge.database.h2.usecase.price.query;
 
 import com.zenyatta.nttdata.challenge.database.h2.domain.PriceEntity;
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-interface GetPriceRepository extends JpaRepository<PriceEntity, Long> {
+interface QueryPriceRepository extends JpaRepository<PriceEntity, Long> {
     @Query("SELECT p FROM PriceEntity p " +
             "WHERE :date BETWEEN p.dateStart AND p.dateEnd " +
             "AND p.productId = :productId " +
@@ -17,7 +17,7 @@ interface GetPriceRepository extends JpaRepository<PriceEntity, Long> {
             "ORDER BY p.priority DESC " +
             "LIMIT 1")
     Optional<PriceEntity> findHighestPriorityPrice(
-            @Param("brandId") Long brandId,
+            @Param("brandId") Integer brandId,
             @Param("productId") Long productId,
             @Param("date") LocalDateTime date);
             

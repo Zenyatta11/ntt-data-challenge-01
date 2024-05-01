@@ -1,4 +1,4 @@
-package com.zenyatta.nttdata.challenge.core.usecase.price.get;
+package com.zenyatta.nttdata.challenge.core.service.price.get;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -6,6 +6,9 @@ import static org.mockito.Mockito.when;
 
 import com.zenyatta.nttdata.challenge.core.domain.Currency;
 import com.zenyatta.nttdata.challenge.core.domain.Price;
+import com.zenyatta.nttdata.challenge.core.service.price.query.QueryPriceService;
+import com.zenyatta.nttdata.challenge.core.usecase.price.query.NotFoundException;
+import com.zenyatta.nttdata.challenge.core.usecase.price.query.QueryPricePort;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,20 +17,19 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class GetPriceServiceTest {
+public class QueryPriceServiceTest {
+    private Long productId = 1L;
+    private Integer brandId = 2;
+    private LocalDateTime date = LocalDateTime.now();
 
     @Mock
-    private GetPricePort getPricePort;
+    private QueryPricePort getPricePort;
 
     @InjectMocks
-    private GetPriceService getPriceService;
+    private QueryPriceService getPriceService;
 
     @Test
     public void testGetPrice() {
-        Long productId = 123L;
-        Long brandId = 456L;
-        LocalDateTime date = LocalDateTime.now();
-
         Price mockPrice = new Price(
                 null, 
                 brandId, 
@@ -49,10 +51,6 @@ public class GetPriceServiceTest {
 
     @Test
     public void testGetPriceNotFOund() {
-        Long productId = 123L;
-        Long brandId = 456L;
-        LocalDateTime date = LocalDateTime.now();
-
         when(getPricePort.getPrice(brandId, productId, date)).thenThrow(new NotFoundException("Not found"));
 
         assertThrows(NotFoundException.class, () -> getPriceService.getPrice(brandId, productId, date));

@@ -33,7 +33,7 @@ public class PriceEntity {
     private Long entryId;
 
     @Column(name = "brand_id", nullable = false)
-    private Long brandId;
+    private Integer brandId;
 
     @Column(name = "start_date", nullable = false)
     private LocalDateTime dateStart;

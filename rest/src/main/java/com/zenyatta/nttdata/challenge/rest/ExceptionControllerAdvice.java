@@ -2,7 +2,7 @@ package com.zenyatta.nttdata.challenge.rest;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-import com.zenyatta.nttdata.challenge.core.usecase.price.get.NotFoundException;
+import com.zenyatta.nttdata.challenge.core.usecase.price.query.NotFoundException;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

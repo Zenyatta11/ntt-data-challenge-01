@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 
 import com.zenyatta.nttdata.challenge.core.domain.Currency;
 import com.zenyatta.nttdata.challenge.core.domain.Price;
-import com.zenyatta.nttdata.challenge.core.usecase.price.get.GetPriceUseCase;
-import com.zenyatta.nttdata.challenge.core.usecase.price.get.NotFoundException;
+import com.zenyatta.nttdata.challenge.core.usecase.price.query.NotFoundException;
+import com.zenyatta.nttdata.challenge.core.usecase.price.query.QueryPriceUseCase;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,20 +20,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-public class QueryControllerTest {
+public class QueryPricesControllerTest {
+    private Long productId = 1L;
+    private Integer brandId = 2;
+    private LocalDateTime date = LocalDateTime.now();
 
     @Mock
-    private GetPriceUseCase getPriceUseCase;
+    private QueryPriceUseCase getPriceUseCase;
 
     @InjectMocks
-    private QueryController queryController;
+    private QueryPricesController queryController;
 
     @Test
     public void testGetPrice() {
-        Long productId = 1L;
-        Long brandId = 2L;
-        LocalDateTime date = LocalDateTime.now();
-
         Price mockPrice = new Price(
                 null,
                 brandId,
@@ -57,10 +56,6 @@ public class QueryControllerTest {
 
     @Test
     public void testGetPriceNotFOund() {
-        Long productId = 1L;
-        Long brandId = 2L;
-        LocalDateTime date = LocalDateTime.now();
-
         when(getPriceUseCase.getPrice(brandId, productId, date))
                 .thenThrow(new NotFoundException("Test price is not found"));
 

@@ -1,7 +1,7 @@
 create table
     prices (
         entry_id bigint AUTO_INCREMENT PRIMARY KEY,
-        brand_id bigint not null,
+        brand_id int not null,
         currency varchar(255) not null check (currency in ('USD', 'EUR')),
         end_date timestamp(6) not null,
         start_date timestamp(6) not null,

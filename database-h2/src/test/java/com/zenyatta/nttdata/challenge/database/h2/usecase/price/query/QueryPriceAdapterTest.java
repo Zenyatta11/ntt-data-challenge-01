@@ -1,14 +1,15 @@
-package com.zenyatta.nttdata.challenge.database.h2.usecase.price.get;
+package com.zenyatta.nttdata.challenge.database.h2.usecase.price.query;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import com.zenyatta.nttdata.challenge.core.domain.Currency;
 import com.zenyatta.nttdata.challenge.core.domain.Price;
-import com.zenyatta.nttdata.challenge.core.usecase.price.get.NotFoundException;
+import com.zenyatta.nttdata.challenge.core.usecase.price.query.NotFoundException;
 import com.zenyatta.nttdata.challenge.database.h2.domain.PriceEntity;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -19,20 +20,19 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class GetPriceAdapterTest {
+public class QueryPriceAdapterTest {
+    private Long productId = 1L;
+    private Integer brandId = 2;
+    private LocalDateTime date = LocalDateTime.now();
 
     @Mock
-    private GetPriceRepository getPriceRepository;
+    private QueryPriceRepository getPriceRepository;
 
     @InjectMocks
-    private GetPriceAdapter getPriceAdapter;
+    private QueryPriceAdapter getPriceAdapter;
 
     @Test
     public void testGetPrice_Success() {
-        Long productId = 123L;
-        Long brandId = 456L;
-        LocalDateTime date = LocalDateTime.now();
-
         PriceEntity priceEntity = new PriceEntity(
                 null,
                 brandId,
@@ -65,11 +65,7 @@ public class GetPriceAdapterTest {
 
     @Test
     public void testGetPrice_NotFound() {
-        Long productId = 123L;
-        Long brandId = 456L;
-        LocalDateTime date = LocalDateTime.now();
-
-        when(getPriceRepository.findHighestPriorityPrice(anyLong(), anyLong(), any())).thenReturn(Optional.empty());
+        when(getPriceRepository.findHighestPriorityPrice(anyInt(), anyLong(), any())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> getPriceAdapter.getPrice(brandId, productId, date));
     }

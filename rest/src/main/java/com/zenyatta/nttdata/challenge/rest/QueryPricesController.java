@@ -3,7 +3,7 @@ package com.zenyatta.nttdata.challenge.rest;
 import static org.springframework.http.HttpStatus.OK;
 
 import com.zenyatta.nttdata.challenge.core.domain.Price;
-import com.zenyatta.nttdata.challenge.core.usecase.price.get.GetPriceUseCase;
+import com.zenyatta.nttdata.challenge.core.usecase.price.query.QueryPriceUseCase;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Slf4j
 @ApiController
-public class QueryController {
-    private final GetPriceUseCase getPriceUseCase;
+public class QueryPricesController {
+    private final QueryPriceUseCase getPriceUseCase;
 
     @Autowired
-    public QueryController(final GetPriceUseCase getPriceUseCase) {
+    public QueryPricesController(final QueryPriceUseCase getPriceUseCase) {
         this.getPriceUseCase = getPriceUseCase;
     }
 
     @GetMapping("/get/{brandId}/{productId}/{date}")
     public ResponseEntity<Price> getPrice(
-            @PathVariable("brandId") final Long brandId, 
+            @PathVariable("brandId") final Integer brandId, 
             @PathVariable("productId") final Long productId,
             @PathVariable("date") final LocalDateTime date
     ) {
